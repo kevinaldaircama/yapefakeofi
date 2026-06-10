@@ -8,110 +8,307 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <style>
-body{
+:root{
+  --primary:#7c3aed;
+  --secondary:#2563eb;
+  --success:#22c55e;
+  --danger:#ef4444;
+  --glass:rgba(255,255,255,.08);
+  --border:rgba(255,255,255,.12);
+}
+
+*{
   margin:0;
-  font-family:Segoe UI;
-  background:linear-gradient(135deg,#4a00e0,#8e2de2);
-  height:100vh;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Inter,Segoe UI,sans-serif;
+}
+
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  overflow:hidden;
+  color:white;
+
+  background:
+  radial-gradient(circle at top left,#7c3aed55,transparent 35%),
+  radial-gradient(circle at bottom right,#2563eb55,transparent 35%),
+  #050816;
+}
+
+/* FONDO ANIMADO */
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:-50%;
+
+  background:
+  linear-gradient(
+    130deg,
+    rgba(124,58,237,.15),
+    rgba(37,99,235,.15),
+    rgba(236,72,153,.15)
+  );
+
+  animation:bgMove 18s linear infinite;
+}
+
+@keyframes bgMove{
+  from{
+    transform:rotate(0deg);
+  }
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+/* CARD */
+
+.card{
+  position:relative;
+  z-index:10;
+
+  width:100%;
+  max-width:520px;
+
+  padding:35px;
+
+  border-radius:30px;
+
+  background:var(--glass);
+
+  backdrop-filter:blur(25px);
+
+  border:1px solid var(--border);
+
+  box-shadow:
+  0 25px 60px rgba(0,0,0,.45);
+
+  animation:show .5s ease;
+}
+
+@keyframes show{
+  from{
+    opacity:0;
+    transform:translateY(20px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* HEADER */
+
+.logo{
+  width:80px;
+  height:80px;
+
+  margin:auto auto 15px;
+
+  border-radius:50%;
+
   display:flex;
   align-items:center;
   justify-content:center;
-  color:white;
-}
 
-.card{
-  width:90%;
-  max-width:420px;
-  background:rgba(255,255,255,.1);
-  backdrop-filter:blur(15px);
-  border-radius:20px;
-  padding:30px;
-  box-shadow:0 10px 30px rgba(0,0,0,.3);
-  animation:fade .4s ease;
-}
+  font-size:34px;
 
-@keyframes fade{
-  from{opacity:0; transform:translateY(20px)}
-  to{opacity:1; transform:translateY(0)}
+  background:
+  linear-gradient(
+    135deg,
+    #7c3aed,
+    #2563eb
+  );
+
+  box-shadow:
+  0 0 30px rgba(124,58,237,.5);
 }
 
 h2{
   text-align:center;
-  margin-bottom:10px;
+  font-size:30px;
+  margin-bottom:8px;
 }
 
 .sub{
   text-align:center;
+  color:#cbd5e1;
+  margin-bottom:25px;
   font-size:14px;
-  opacity:.8;
-  margin-bottom:20px;
 }
+
+/* INPUTS */
 
 .input{
   width:100%;
-  padding:12px;
-  border:none;
-  border-radius:10px;
-  margin-top:10px;
+
+  padding:15px;
+
+  margin-top:12px;
+
+  border-radius:15px;
+
+  border:1px solid rgba(255,255,255,.1);
+
+  background:
+  rgba(255,255,255,.05);
+
+  color:white;
+
   outline:none;
-  font-size:14px;
+
+  transition:.3s;
+}
+
+.input::placeholder{
+  color:#94a3b8;
+}
+
+.input:focus{
+  border-color:#8b5cf6;
+
+  box-shadow:
+  0 0 0 4px rgba(139,92,246,.15);
 }
 
 textarea{
+  min-height:120px;
   resize:none;
-  height:80px;
 }
+
+/* SUBIDA */
 
 .file{
-  margin-top:10px;
-  background:rgba(255,255,255,.2);
-  padding:10px;
-  border-radius:10px;
+  margin-top:15px;
+
+  border:2px dashed rgba(255,255,255,.15);
+
+  border-radius:18px;
+
+  padding:25px;
+
+  text-align:center;
+
   cursor:pointer;
+
+  transition:.3s;
 }
 
+.file:hover{
+  background:rgba(255,255,255,.05);
+  border-color:#8b5cf6;
+}
+
+.file i{
+  font-size:28px;
+  margin-bottom:10px;
+  display:block;
+}
+
+/* PREVIEW */
+
 .preview{
-  margin-top:10px;
-  text-align:center;
+  margin-top:15px;
 }
 
 .preview img{
-  max-width:100%;
-  border-radius:12px;
-  margin-top:10px;
+  width:100%;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.1);
 }
 
-.btn{
-  margin-top:20px;
-  padding:14px;
-  width:100%;
-  border:none;
+/* STATUS */
+
+.status{
+  margin-top:15px;
+
+  padding:12px;
+
   border-radius:12px;
-  background:linear-gradient(135deg,#25D366,#1ebe5d);
-  color:white;
-  font-weight:bold;
-  font-size:16px;
+
+  text-align:center;
+
+  font-size:13px;
+
+  background:rgba(34,197,94,.15);
+
+  border:1px solid rgba(34,197,94,.2);
+}
+
+/* BOTON */
+
+.btn{
+  width:100%;
+
+  margin-top:20px;
+
+  padding:16px;
+
+  border:none;
+
+  border-radius:16px;
+
   cursor:pointer;
+
+  color:white;
+
+  font-size:16px;
+  font-weight:800;
+
+  background:
+  linear-gradient(
+    135deg,
+    #22c55e,
+    #16a34a
+  );
+
+  transition:.3s;
+
+  box-shadow:
+  0 15px 35px rgba(34,197,94,.35);
+}
+
+.btn:hover{
+  transform:translateY(-3px);
+
+  box-shadow:
+  0 20px 40px rgba(34,197,94,.45);
 }
 
 .btn i{
   margin-right:8px;
 }
 
-.btn:hover{
-  opacity:.9;
-}
+/* VOLVER */
 
 .back{
-  margin-top:15px;
+  margin-top:18px;
   text-align:center;
-  font-size:14px;
+  color:#cbd5e1;
   cursor:pointer;
-  opacity:.8;
 }
 
 .back:hover{
-  opacity:1;
+  color:white;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:600px){
+
+  .card{
+    padding:25px;
+  }
+
+  h2{
+    font-size:24px;
+  }
+
 }
 </style>
 </head>
@@ -120,8 +317,11 @@ textarea{
 
 <div class="card">
 
-  <h2>📩 Soporte de Pago</h2>
-  <div class="sub">Si pagaste y no se activó, repórtalo aquí</div>
+  <h2>soporte por Whatsapp</h2>
+  <div class="logo">
+  <i class="fa-solid fa-headset"></i>
+</div>
+  <div class="sub">Si necesitas ayuda llena las siguientes casillas.</div>
 
   <input class="input" id="nombre" placeholder="Tu nombre">
 
@@ -139,7 +339,9 @@ textarea{
   <button class="btn" onclick="enviarWhatsApp()">
     <i class="fa-brands fa-whatsapp"></i> Enviar por WhatsApp
   </button>
-
+<div class="status">
+✅ Tiempo promedio de respuesta: 1 a 24 horas
+</div>
   <div class="back" onclick="history.back()">← Volver</div>
 
 </div>
