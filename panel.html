@@ -4,10 +4,9 @@
 <meta charset="UTF-8">  
 <title>Dashboard Usuarios</title>  
 <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-  <link rel="manifest" href="manifest.json">
+<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#720e9e">
 <link rel="icon" type="image/png" href="imagen/app_icon_xxxhdpi.png">
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">  
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  
   
@@ -388,6 +387,10 @@ canvas{
 <i class="fa fa-key"></i> Tokens
 </a>
 <a data-section="settings"><i class="fa fa-gear"></i> Configuración</a>  
+<a id="logoutBtn">
+  <i class="fa fa-sign-out-alt"></i>
+  Cerrar sesión
+</a>
 </div>  
   
 <div class="hamburger" id="menuBtn"><span></span><span></span><span></span></div>  
@@ -415,7 +418,7 @@ canvas{
   type="number"
   placeholder="Días de duración (7, 30, 60...)">  
 <select id="newRole">
-    <option value="Selecciona proveedor">Selecciona proveedor</option>
+    <option value="">Selecciona proveedor</option>
   <option value="Proveedor Básico">Proveedor Básico</option>
   <option value="Proveedor Standard">Proveedor Standard</option>
   <option value="Proveedor Premium">Proveedor Premium</option>
@@ -482,8 +485,7 @@ Generar Token
 <!-- CONFIGURACIÓN -->  
 <div id="settings" class="box" style="display:none;">  
 <h2>Configuración</h2>  
-<button onclick="logout()">Cerrar sesión</button>  
-  
+
 <button onclick="toggleMaintenance()">🛠️ Modo Mantenimiento</button>  
 <p id="maintStatus">Estado mantenimiento: DESACTIVADO</p>
  
@@ -498,7 +500,10 @@ Generar Token
     <input id="editPass" placeholder="Contraseña">
     <input id="editName" placeholder="Nombre">
     <input id="editPhone" placeholder="WhatsApp">
-    <input id="editExpire" type="date">
+    <input
+  id="editExpire"
+  type="number"
+  placeholder="Agregar días (7, 30, 60...)">
     <select id="editRole">
         <option value="selecciona proveedor">Selecciona proveedor</option>
         <option value="Proveedor Básico">Proveedor Básico</option>
@@ -609,29 +614,35 @@ content.classList.toggle("active");
 menuBtn.classList.toggle("active");  
 };  
   
-document.querySelectorAll(".sidebar a").forEach(link=>{
+document.querySelectorAll(".sidebar a[data-section]").forEach(link=>{
+
   link.onclick=()=>{
 
-    document.querySelectorAll(".sidebar a")
-      .forEach(a=>a.classList.remove("active"));
+    document.querySelectorAll(".sidebar a[data-section]")
+    .forEach(a=>a.classList.remove("active"));
 
     link.classList.add("active");
 
-    dashboard.style.display = "none";
-    users.style.display = "none";
-    tokens.style.display = "none";
-    settings.style.display = "none";
+    dashboard.style.display="none";
+    users.style.display="none";
+    tokens.style.display="none";
+    settings.style.display="none";
 
     document.getElementById(link.dataset.section)
-      .style.display = "block";
+    .style.display="block";
 
-    if(link.dataset.section === "tokens"){
+    if(link.dataset.section==="tokens"){
       loadTokens();
     }
 
     menuBtn.click();
   };
+
 });
+
+document.getElementById("logoutBtn").onclick=()=>{
+  logout();
+};
   
   
 // ---------------- LOGIN ----------------  
@@ -792,7 +803,7 @@ modal.style.display="flex";
 };
 // ---------------- LOAD USERS ----------------  
   
-async function loadUsers() {
+window.loadUsers = async () => {
   const snap = await get(ref(db, "admins"));
   usersList.innerHTML = "";
   if (!snap.exists()) return;
@@ -865,7 +876,21 @@ editEmail.value = u.email || "";
 editPass.value=u.pass;  
 editName.value=u.name;  
 editPhone.value=u.phone;  
-editExpire.value=u.expire;  
+if (u.expire) {
+
+  const fechaVence = new Date(u.expire);
+
+  const dias = Math.ceil(
+    (fechaVence.getTime() - Date.now()) / 86400000
+  );
+
+  editExpire.value = dias > 0 ? dias : 0;
+
+} else {
+
+  editExpire.value = 0;
+
+}
 editRole.value=u.role;  
   
 });  
@@ -877,21 +902,28 @@ editModal.style.display="none";
 };  
   
 window.saveEdit = async () => {
+
   const id = editModal.dataset.id;
 
+  const dias = parseInt(editExpire.value);
+
+  const fecha = new Date();
+  fecha.setDate(fecha.getDate() + dias);
+
+  const expire = fecha.toISOString().split("T")[0];
+
   await update(ref(db, "admins/" + id), {
-    email: editEmail.value,   // <--- actualizar correo
+    email: editEmail.value,
     pass: editPass.value,
     name: editName.value,
     phone: editPhone.value,
-    expire: editExpire.value,
+    expire: expire,
     role: editRole.value
   });
 
   closeModal();
   loadUsers();
 };
-
   
   
 // ---------------- CHART ----------------  
