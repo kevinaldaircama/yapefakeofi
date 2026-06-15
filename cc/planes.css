@@ -240,21 +240,43 @@ header p{
 
 .price{
   text-align:center;
+  margin:25px 0;
+}
 
-  font-size:50px;
+.price .old{
+  display:block;
+  font-size:22px;
+  color:#94a3b8;
+  text-decoration:line-through;
+  margin-bottom:5px;
+}
+
+.price .new{
+  display:block;
+  font-size:55px;
   font-weight:900;
 
-  margin:25px 0;
-
-  background:
-  linear-gradient(
-  135deg,
-  #fff,
-  #8b5cf6
+  background:linear-gradient(
+    135deg,
+    #22c55e,
+    #4ade80
   );
 
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
+}
+
+.price .sale{
+  display:inline-block;
+  margin-top:8px;
+  padding:6px 12px;
+  border-radius:20px;
+
+  background:#ef4444;
+  color:white;
+
+  font-size:14px;
+  font-weight:700;
 }
 
 /* DETALLES */
