@@ -647,42 +647,37 @@ document.getElementById("logoutBtn").onclick=()=>{
   
 // ---------------- LOGIN ----------------  
   
-window.login=async()=>{  
-  
-const email = document.getElementById("email").value.trim();  
-const pass = document.getElementById("password").value.trim();  
-  
-if(email==="kevinaldaircamachoserna51@gmail.com" && pass==="1234"){  
-  
-localStorage.setItem("adminUser",email);  
-localStorage.setItem("adminRole","superadmin");  
-localStorage.setItem("adminName","Kevin");  
-  
-mostrarPanel();  
-return;  
-}  
-  
-const snap = await get(ref(db,"admins/"+email.replace(".","_")));  
-  
-if(!snap.exists()){  
-document.getElementById("error").style.display="block";  
-return;  
-}  
-  
-const data = snap.val();  
-  
-if(data.pass!==pass){  
-document.getElementById("error").style.display="block";  
-return;  
-}  
-  
-localStorage.setItem("adminUser",data.user);  
-localStorage.setItem("adminRole",data.role);  
-localStorage.setItem("adminName",data.name);  
-  
-mostrarPanel();  
-  
-};  
+window.login = async () => {
+
+  const email = document.getElementById("email").value.trim();
+  const pass = document.getElementById("password").value.trim();
+
+  const snap = await get(ref(db, "dueno"));
+
+  if (!snap.exists()) {
+    document.getElementById("error").style.display = "block";
+    return;
+  }
+
+  let encontrado = null;
+
+  Object.values(snap.val()).forEach(user => {
+    if (user.email === email && user.pass === pass) {
+      encontrado = user;
+    }
+  });
+
+  if (!encontrado) {
+    document.getElementById("error").style.display = "block";
+    return;
+  }
+
+  localStorage.setItem("adminUser", encontrado.email);
+  localStorage.setItem("adminRole", encontrado.role);
+  localStorage.setItem("adminName", encontrado.name);
+
+  mostrarPanel();
+};
   
   
 // ---------------- PANEL ----------------  
@@ -1003,17 +998,17 @@ window.renewAll = async () => {
   
 // ---------------- MAINT ----------------  
   
-window.toggleMaintenance = async () => {  
-  
-const r = ref(db,"config/maintenance/enabled");  
-  
-const snap = await get(r);  
-  
-await set(r, !(snap.exists() && snap.val()));  
-  
-updateMaintText();  
-  
-};  
+window.toggleMaintenance = async () => {
+  const r = ref(db, "config/maintenance/enabled");
+  const snap = await get(r);
+
+  const current = snap.exists() ? snap.val() : false;
+  const newValue = !current;
+
+  await set(r, newValue);
+
+  updateMaintText();
+};
   
 function updateMaintText(){  
   
