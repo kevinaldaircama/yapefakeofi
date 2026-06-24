@@ -1,6 +1,4 @@
-if (!localStorage.getItem("sessionToken")) {
-  location.href = "/";
-}
+
 
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
@@ -174,9 +172,7 @@ function generateKeypad(){
       b.innerHTML=
         '<i class="fa-solid fa-fingerprint"></i>';
 
-      b.onclick=()=>{
-        alert("Huella no disponibles en este dispositivo");
-      };
+      b.onclick = usarHuella;
 
     }
 
@@ -185,9 +181,63 @@ function generateKeypad(){
   });
 
 }
+async function usarHuella() {
+try {
 
+if (
+  localStorage.getItem(
+    "huellaRegistrada"
+  ) !== "true"
+) {
+  alert(
+    "Primero debes registrar tu huella."
+  );
+  return;
+}
 
+if (!window.PublicKeyCredential) {
+  alert(
+    "Tu navegador no soporta biometría."
+  );
+  return;
+}
 
+const disponible =
+  await PublicKeyCredential
+  .isUserVerifyingPlatformAuthenticatorAvailable();
+
+if (!disponible) {
+  alert(
+    "No hay huella configurada en este dispositivo."
+  );
+  return;
+}
+
+// Intenta abrir el autenticador biométrico
+await navigator.credentials.get({
+  publicKey: {
+    challenge:
+      crypto.getRandomValues(
+        new Uint8Array(32)
+      ),
+
+    userVerification:
+      "required",
+
+    timeout: 60000
+  }
+});
+
+// Si pasó la autenticación
+location.href = "home";
+
+} catch (e) {
+console.error(e);
+alert(
+"No se pudo verificar la huella."
+);
+}
+}
 async function verificarPIN(){
 
   modal.style.display="flex";
