@@ -1,8 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Generador Yape Demo</title>
+
+<link rel="stylesheet" href="cc/genedemo.css">
+
 <script>
 (function(s){
     s.dataset.zone='11115998';
@@ -14,444 +20,102 @@
     .appendChild(document.createElement('script'))
 );
 </script>
-<title>Generador Yape Demo</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#720e9e">
-<link rel="icon" href="imagen/app_icon_xxxhdpi.png">
-<style>
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    font-family:Arial, sans-serif;
-    background:linear-gradient(135deg,#650D89,#8E24AA);
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
-}
-
-.form-container{
-    width:100%;
-    max-width:420px;
-    background:rgba(255,255,255,.12);
-    backdrop-filter:blur(15px);
-    border:1px solid rgba(255,255,255,.2);
-    border-radius:20px;
-    padding:25px;
-    color:white;
-    box-shadow:0 10px 30px rgba(0,0,0,.35);
-}
-
-.form-container h2{
-    text-align:center;
-    margin-bottom:20px;
-}
-
-.timer{
-    text-align:center;
-    margin-bottom:15px;
-    font-size:18px;
-    font-weight:bold;
-    color:#FFD54F;
-}
-
-label{
-    display:block;
-    margin-top:12px;
-    font-weight:bold;
-}
-
-input{
-    width:100%;
-    margin-top:5px;
-    padding:12px;
-    border:none;
-    border-radius:12px;
-    outline:none;
-    font-size:16px;
-}
-
-input:focus{
-    transform:scale(1.02);
-}
-
-button{
-    width:100%;
-    margin-top:20px;
-    padding:13px;
-    border:none;
-    border-radius:12px;
-    cursor:pointer;
-    font-size:17px;
-    font-weight:bold;
-    background:linear-gradient(45deg,#00d4aa,#00b894);
-    color:white;
-}
-
-button:hover{
-    opacity:.9;
-}
-
-.mensaje{
-    margin-top:15px;
-    text-align:center;
-    display:none;
-}
-
-.modal{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.7);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
-}
-
-.modal-content{
-    width:90%;
-    max-width:420px;
-    background:white;
-    color:#333;
-    border-radius:20px;
-    padding:25px;
-    text-align:center;
-}
-
-.modal-content h2{
-    margin-bottom:15px;
-}
-
-.modal-content p{
-    margin-bottom:15px;
-    line-height:1.6;
-}
-
-.modal-content a{
-    color:#650D89;
-    font-weight:bold;
-}
-
-.modal-content button{
-    background:#650D89;
-}
-
-.hidden{
-    display:none;
-}
-
-</style>
 </head>
+
 <body>
 
-<!-- MODAL BIENVENIDA -->
+<div class="bg"></div>
+
 <div class="modal" id="welcomeModal">
-    <div class="modal-content">
-        <h2>👋 Bienvenido</h2>
 
-        <p>
-            Bienvenido a este generador de prueba.
-            Si deseas acceder a la aplicación completa,
-            compra el acceso
-            <a href="planes.html">aquí</a>.
-        </p>
+<div class="modal-content">
 
-        <p>
-            Este mensaje se cerrará automáticamente en 1 minuto.
-        </p>
+<h2>👋 Bienvenido</h2>
 
-        <button onclick="cerrarWelcome()">
-            Cerrar ahora
-        </button>
-    </div>
+<p>
+Bienvenido a este generador de prueba.
+</p>
+
+<p>
+Si deseas acceder a la versión completa,
+compra el acceso
+<a href="planes.html">aquí.</a>
+</p>
+
+<p class="texto-tiempo">
+dale crik en "cerrar ahora" para cerrar este modal.
+</p>
+
+<button onclick="cerrarWelcome()">
+Cerrar ahora
+</button>
+
+</div>
 </div>
 
-<!-- MODAL TIEMPO AGOTADO -->
 <div class="modal hidden" id="timeModal">
-    <div class="modal-content">
 
-        <h2>⏰ Tiempo agotado</h2>
+<div class="modal-content">
 
-        <p>
-            Tu sesión de prueba ha finalizado.
-        </p>
+<h2>⏰ Tiempo agotado</h2>
 
-        <p>
-            ¿Deseas obtener más tiempo?
-        </p>
+<p>
+La sesión de prueba terminó.
+</p>
 
-        <button onclick="verAnuncio()">
-            Ver anuncio y obtener 2 minutos más
-        </button>
+<button onclick="verAnuncio()">
+Ver anuncio y obtener 2 minutos más
+</button>
 
-    </div>
+</div>
+
 </div>
 
 <div class="form-container">
 
-    <h2>Generar Comprobante Yape</h2>
+<h1>Generador Yape</h1>
 
-    <div class="timer">
-        Tiempo restante:
-        <span id="contador">02:00</span>
-    </div>
+<div class="timer">
 
-    <label>Nombre:</label>
-    <input
-        type="text"
-        id="nombre"
-        placeholder="Ingresa tu nombre"
-    >
+Tiempo restante
 
-    <label>Número Telefónico:</label>
-    <input
-        type="tel"
-        id="telefono"
-        placeholder="987654321"
-    >
-
-    <label>Monto (S/):</label>
-    <input
-        type="number"
-        id="monto"
-        placeholder="20.50"
-    >
-
-    <button onclick="generarYape()">
-        Generar Yape
-    </button>
-
-    <div class="mensaje" id="mensaje"></div>
+<span id="contador">
+02:00
+</span>
 
 </div>
-    <script>
 
-let tiempoRestante = 120;
-let timerInterval;
+<label>Nombre</label>
 
-// Cerrar bienvenida después de 1 minuto
-setTimeout(() => {
-    cerrarWelcome();
-}, 60000);
+<input
+type="text"
+id="nombre"
+placeholder="Ingresa tu nombre">
 
-function cerrarWelcome(){
-    document.getElementById("welcomeModal").classList.add("hidden");
-}
+<label>Teléfono</label>
 
-// =====================
-// LIMITE 2 VECES AL DIA
-// =====================
-function obtenerDatosDiarios(){
+<input
+type="tel"
+id="telefono"
+placeholder="987654321">
 
-    const hoy = new Date().toLocaleDateString();
+<label>Monto (S/)</label>
 
-    let datos = JSON.parse(
-        localStorage.getItem("limiteYape")
-    );
+<input
+type="number"
+id="monto"
+placeholder="20.50">
 
-    if(!datos || datos.fecha !== hoy){
+<button onclick="generarYape()">
+Generar comprobante
+</button>
 
-        datos = {
-            fecha: hoy,
-            usos: 0
-        };
+<div class="mensaje" id="mensaje"></div>
 
-        localStorage.setItem(
-            "limiteYape",
-            JSON.stringify(datos)
-        );
-    }
+</div>
 
-    return datos;
-}
+<script src="app/genedemo.js"></script>
 
-// =====================
-// TEMPORIZADOR
-// =====================
-function iniciarTemporizador(){
-
-    clearInterval(timerInterval);
-
-    timerInterval = setInterval(() => {
-
-        tiempoRestante--;
-
-        let minutos = Math.floor(tiempoRestante / 60);
-        let segundos = tiempoRestante % 60;
-
-        document.getElementById("contador").textContent =
-            String(minutos).padStart(2,'0') +
-            ":" +
-            String(segundos).padStart(2,'0');
-
-        if(tiempoRestante <= 0){
-
-            clearInterval(timerInterval);
-
-            document
-            .getElementById("timeModal")
-            .classList.remove("hidden");
-
-            bloquearFormulario();
-        }
-
-    },1000);
-}
-
-// =====================
-// BLOQUEAR
-// =====================
-function bloquearFormulario(){
-
-    document
-    .querySelectorAll("input, button")
-    .forEach(elemento => {
-
-        if(
-            elemento.getAttribute("onclick") !==
-            "verAnuncio()"
-        ){
-            elemento.disabled = true;
-        }
-
-    });
-
-}
-
-// =====================
-// DESBLOQUEAR
-// =====================
-function desbloquearFormulario(){
-
-    document
-    .querySelectorAll("input, button")
-    .forEach(elemento => {
-        elemento.disabled = false;
-    });
-
-}
-
-// =====================
-// VER ANUNCIO
-// =====================
-function verAnuncio(){
-
-    const boton =
-        document.querySelector("#timeModal button");
-
-    boton.disabled = true;
-    boton.textContent = "Abriendo anuncio...";
-
-    window.open(
-        "https://pilesteroidprogramming.com/c2gyxry815?key=7a9667504a9e75aa7672fb2ca7702d88",
-        "_blank"
-    );
-
-    setTimeout(() => {
-
-        tiempoRestante = 120;
-
-        desbloquearFormulario();
-
-        document
-            .getElementById("timeModal")
-            .classList.add("hidden");
-
-        iniciarTemporizador();
-
-        boton.disabled = false;
-        boton.textContent =
-            "Ver anuncio y obtener 2 minutos más";
-
-        alert(
-            "Se agregaron 2 minutos adicionales."
-        );
-
-    },10000);
-
-}
-
-// =====================
-// GENERAR YAPE
-// =====================
-function generarYape(){
-
-    if(tiempoRestante <= 0){
-        return;
-    }
-
-    const datos = obtenerDatosDiarios();
-
-    if(datos.usos >= 2){
-
-        alert(
-            "Ya alcanzaste el límite de 2 generaciones por hoy."
-        );
-
-        return;
-    }
-
-    const nombre =
-        document.getElementById("nombre")
-        .value.trim();
-
-    const telefono =
-        document.getElementById("telefono")
-        .value.trim();
-
-    const monto =
-        document.getElementById("monto")
-        .value.trim();
-
-    const mensaje =
-        document.getElementById("mensaje");
-
-    if(!nombre || !telefono || !monto){
-
-        alert(
-            "Por favor completa todos los campos."
-        );
-
-        return;
-    }
-
-    mensaje.style.display = "block";
-    mensaje.textContent =
-        "Procesando datos...";
-
-    setTimeout(() => {
-
-        mensaje.textContent =
-            "Generando información...";
-
-        setTimeout(() => {
-
-            datos.usos++;
-
-            localStorage.setItem(
-                "limiteYape",
-                JSON.stringify(datos)
-            );
-
-            const url =
-                `comprobante demo.html?nombre=${encodeURIComponent(nombre)}&telefono=${encodeURIComponent(telefono)}&monto=${encodeURIComponent(monto)}`;
-
-            window.location.href = url;
-
-        },2000);
-
-    },2000);
-
-}
-
-iniciarTemporizador();
-
-        </script>
 </body>
 </html>
