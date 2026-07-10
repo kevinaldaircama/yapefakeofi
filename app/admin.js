@@ -106,11 +106,10 @@ document.getElementById("logoutBtn").onclick=()=>{
 };
   
   
-// ---------------- LOGIN ----------------
-
-// Credenciales del administrador
+// ---------------- LOGIN ----------------  
+ 
 const ADMIN_EMAIL = "kevinaldaircamachoserna51@gmail.com";
-const ADMIN_PASSWO = "kevintech";
+const ADMIN_PASSWORD = "kevintech";
 const ADMIN_NAME = "KevinTech";
 const ADMIN_ROLE = "owner";
 
@@ -546,4 +545,5 @@ async function loadTokens(){
 
   });
 
-}
+  }
+  
