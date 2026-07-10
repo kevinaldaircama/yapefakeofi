@@ -106,36 +106,27 @@ document.getElementById("logoutBtn").onclick=()=>{
 };
   
   
-// ---------------- LOGIN ----------------  
-  
-window.login = async () => {
+// ---------------- LOGIN ----------------
+
+// Credenciales del administrador
+const ADMIN_EMAIL = "kevinaldaircamachoserna51@gmail.com";
+const ADMIN_PASSWO = "kevintech";
+const ADMIN_NAME = "KevinTech";
+const ADMIN_ROLE = "owner";
+
+window.login = () => {
 
   const email = document.getElementById("email").value.trim();
   const pass = document.getElementById("password").value.trim();
 
-  const snap = await get(ref(db, "dueno"));
-
-  if (!snap.exists()) {
+  if (email !== ADMIN_EMAIL || pass !== ADMIN_PASSWORD) {
     document.getElementById("error").style.display = "block";
     return;
   }
 
-  let encontrado = null;
-
-  Object.values(snap.val()).forEach(user => {
-    if (user.email === email && user.pass === pass) {
-      encontrado = user;
-    }
-  });
-
-  if (!encontrado) {
-    document.getElementById("error").style.display = "block";
-    return;
-  }
-
-  localStorage.setItem("adminUser", encontrado.email);
-  localStorage.setItem("adminRole", encontrado.role);
-  localStorage.setItem("adminName", encontrado.name);
+  localStorage.setItem("adminUser", ADMIN_EMAIL);
+  localStorage.setItem("adminRole", ADMIN_ROLE);
+  localStorage.setItem("adminName", ADMIN_NAME);
 
   mostrarPanel();
 };
