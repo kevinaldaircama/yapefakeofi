@@ -2,10 +2,8 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<title>Yapear</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yapear a</title>
 <link rel="manifest" href="manifest.json" />
 <meta name="theme-color" content="#720e9e" />
 <link rel="icon" type="image/png" href="imagen/app_icon_xxxhdpi.png">
@@ -13,24 +11,38 @@
 <!-- CSS externo -->
 <link rel="stylesheet" href="cc/yapear.css">
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
 
-<div class="app">
+<div class="container">
 
-    <div class="topbar">
-        <div class="close">✕</div>
-        <div class="title">Yapear</div>
+    <div class="header">
+        <div class="close">
+            <i class="fa-solid fa-xmark"></i>
+        </div>
+        <h2>Yapear a</h2>
     </div>
 
-    <div class="search-container">
-        <div class="search-box">
-            <input type="text" id="buscador" placeholder="Busca el celular o contacto">
-            <div class="icon">🔍</div>
+    <div class="search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input
+    type="text"
+    id="buscador"
+    placeholder="Busca el celular o contacto">
+    </div>
+
+    <div class="new-number">
+        <div class="left">
+            <div class="icon-box">
+                <i class="fa-solid fa-mobile-screen"></i>
+            </div>
+            <span>Nuevo número</span>
+        </div>
+
+        <div class="arrow">
+            <i class="fa-solid fa-chevron-right"></i>
         </div>
     </div>
 
@@ -38,13 +50,13 @@
         Todos tus contactos
     </div>
 
-    <div class="contact-list">
-        <div class="loading">Cargando contactos...</div>
-    </div>
-
+<div class="contact-list"></div>
 </div>
 
-<!-- JS externo -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+
 <script src="app/firebase-config.js"></script>
 <script src="app/yapear.js"></script>
 
