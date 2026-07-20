@@ -31,17 +31,27 @@ function startApp(){
     btnLogin.disabled = true;
 
     try {
-      const snap = await get(
-        ref(db, "admins/" + user.replace(".", "_"))
-      );
+      const snap = await get(ref(db, "admins"));
 
-      if(!snap.exists()){
-        loginStatus.textContent = "Usuario no existe";
-        btnLogin.disabled = false;
-        return;
-      }
+if (!snap.exists()) {
+  loginStatus.textContent = "Usuario no existe";
+  btnLogin.disabled = false;
+  return;
+}
 
-      const data = snap.val();
+let data = null;
+
+Object.values(snap.val()).forEach(admin => {
+  if (admin.email === user) {
+    data = admin;
+  }
+});
+
+if (!data) {
+  loginStatus.textContent = "Usuario no existe";
+  btnLogin.disabled = false;
+  return;
+}
 
       if(data.pass !== pass){
         loginStatus.textContent = "Contraseña incorrecta";
