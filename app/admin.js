@@ -48,7 +48,7 @@ editPhone = document.getElementById("editPhone");
 editExpire = document.getElementById("editExpire");  
 editRole = document.getElementById("editRole");  
   
-if(!localStorage.getItem("adminUser")){  
+if(!localStorage.getItem("ownerUser")){  
 document.getElementById("loginOverlay").style.display="flex";  
 }else{  
 mostrarPanel();  
@@ -123,9 +123,9 @@ window.login = () => {
     return;
   }
 
-  localStorage.setItem("adminUser", ADMIN_EMAIL);
-  localStorage.setItem("adminRole", ADMIN_ROLE);
-  localStorage.setItem("adminName", ADMIN_NAME);
+  localStorage.setItem("ownerUser", ADMIN_EMAIL);
+  localStorage.setItem("ownerRole", ADMIN_ROLE);
+  localStorage.setItem("ownerName", ADMIN_NAME);
 
   mostrarPanel();
 };
@@ -144,7 +144,7 @@ function mostrarPanel(){
 
   welcome.innerText =
     "Bienvenido " +
-    localStorage.getItem("adminName");
+    localStorage.getItem("ownerName");
 
   loadUsers();
   loadChart();
@@ -154,7 +154,9 @@ function mostrarPanel(){
 // ---------------- LOGOUT ----------------  
   
 window.logout=()=>{  
-localStorage.clear();  
+localStorage.removeItem("ownerUser");
+localStorage.removeItem("ownerRole");
+localStorage.removeItem("ownerName");
 location.reload();  
 };  
   
@@ -545,5 +547,4 @@ async function loadTokens(){
 
   });
 
-  }
-  
+}
